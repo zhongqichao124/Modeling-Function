@@ -1,2 +1,23 @@
 # Modeling-Function
 Common self-defined function to modeling
+
+def normalize_features(df, input_feature_cols):
+    df[input_feature_cols] = df[input_feature_cols].fillna(0)
+    ss = StandardScaler()
+    normalize_data = ss.fit_transform(df[input_feature_cols])
+    normalize_df = pd.DataFrame(normalize_data, columns=input_feature_cols)
+    return normalize_df
+    
+#feature process
+def feature_onehot(columns, data):
+    for x in columns:
+        # integer encode
+        label_encoder = LabelEncoder()
+        integer_encoded = label_encoder.fit_transform(data[x])
+        onehot_features = pd.DataFrame(integer_encoded,  columns={x + "_vec"})
+        data = pd.concat([data, onehot_features], axis=1)
+    data.drop(columns, axis=1, inplace=True)
+    return data
+    
+    
+    
